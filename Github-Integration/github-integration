@@ -1,0 +1,51 @@
+Sonarqube Github Integration
+
+DevOps Platform integrations allow SonarQube to interact with your DevOps Platform. This enables things like authentication, or providing analysis details and a Quality Gate to your Pull Requests directly in your DevOps Platform's interface.
+
+
+Pre-requisites
+
+Set Server base URL in Administration > Configuration > General Settings > General.
+
+Import your GitHub repositories to SonarQube. 
+
+This is a 3 step process
+1. Create your GitHub App.
+2. Install your GitHub App in your organization.
+3. Update your SonarQube global settings with your GitHub App information.
+
+Github Actions
+
+This can integrate analysis into build pipeline
+
+Steps:
+1. Create your GitHub Secrets. 
+
+a. Sonar Token: Generate a SonarQube token and, in GitHub, create a new repository secret in GitHub with SONAR_TOKEN as the Name and the token you generated as the Value.
+b. Sonar Host URL: In GitHub, create a new repository secret with SONAR_HOST_URL as the Name and your SonarQube server URL as the Value.
+c. SONAR_ROOT_CERT - Holds an additional root certificate (in PEM format) that is used to validate the SonarQube server certificate. You can set the SONAR_ROOT_CERT environment variable in the "Secrets" settings page of your repository, or you can add them at the level of your GitHub organization (recommended).
+
+2. Configuring your .github/workflows/build.yml file
+
+
+It is possible to fail a github check if quality gate check fails. 
+
+
+
+Limitations in Community edition: 
+
+1. Inability to see the quality gates and code metrics from Github itself. 
+2. Inability to automatically detect branches or PRs. They have to be explicitly mentioned as parameters in the workflow file. 
+3. Can only analyze the main branch
+4. Can integrate with only one Github account
+5. Community Edition doesn't support analyzing multiple branches with Github actions. 
+
+
+Important links
+
+https://docs.sonarsource.com/sonarqube/latest/devops-platform-integration/github-integration/#preventing-pull-request-merges-when-the-quality-gate-fails
+
+https://docs.sonarsource.com/sonarqube/8.9/alm-integration/github-integration/
+
+https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/test-coverage/java-test-coverage/
+
