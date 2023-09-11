@@ -1,0 +1,53 @@
+Pre-requisites
+
+sudo apt install net-tools unzip
+
+1. Install Java 17
+
+sudo apt install openjdk-17-jre
+sudo apt install openjdk-17-jdk
+
+
+2. Install postgres 
+
+sudo apt install postgresql
+sudo passwd postgres
+su - postgres
+createuser sonarqube
+psql
+
+ALTER USER sonarqube WITH ENCRYPTED PASSWORD 'admin';
+CREATE DATABASE sonarqube OWNER sonarqube;
+GRANT ALL PRIVILEGES ON DATABASE sonarqube to sonarqube;
+ALTER USER sonarqube SET search_path to sonarqube;
+
+sudo service postgresql restart
+
+sudo nano /etc/sysctl.conf 
+
+(Add the following)
+vm.max_map_count=524288
+fs.file-max=131072
+ulimit -n 131072
+ulimit -u 8192
+
+sudo nano /etc/security/limits.conf
+(Add the following)
+sonarqube   -   nofile   131072
+sonarqube   -   nproc    8192
+
+cd /opt
+Download sonarqube here
+unzip sonarqube
+Edit the sonar.properties according to your needs. A sample file is provided in this repository.
+
+create sonar user and assign permissions
+
+useradd -d /opt//sonarqube-10.1.0.73491 sonar
+chown -R sonar:sonar /opt/sonarqube-10.1.0.73491
+
+
+Make sure to bind the sonarqube to the right IP if not using a static IP
+Remove the temp/conf directory before starting sonarqube
+
+sonar.sh start
